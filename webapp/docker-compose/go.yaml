@@ -1,7 +1,7 @@
 version: "3"
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
     volumes:
       - ../mysql/data:/var/lib/mysql
       - ../mysql/db:/docker-entrypoint-initdb.d
@@ -13,6 +13,7 @@ services:
       MYSQL_DATABASE: isuumo
       MYSQL_USER: isucon
       MYSQL_PASSWORD: isucon
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
 
@@ -47,10 +48,10 @@ services:
   nginx:
     build: ../nginx
     volumes:
-        - ../../provisioning/ansible/roles/web-bootstrap/files/nginx.conf.template:/etc/nginx/nginx.conf.template
-        - ../logs/nginx:/var/log/nginx
-        - ../nginx/conf.d:/etc/nginx/conf.d
-        - ../nginx/out:/www/data
+      - ../../provisioning/ansible/roles/web-bootstrap/files/nginx.conf.template:/etc/nginx/nginx.conf.template
+      - ../logs/nginx:/var/log/nginx
+      - ../nginx/conf.d:/etc/nginx/conf.d
+      - ../nginx/out:/www/data
     ports:
       - "8080:80"
     entrypoint:
